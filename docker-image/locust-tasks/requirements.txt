@@ -9,4 +9,8 @@ msgpack-python==0.4.6
 pyzmq==14.5.0
 requests==2.6.2
 Werkzeug==0.10.4
+selenium==3.4.1
 realbrowserlocusts
+flake8==3.3.0
+pylint==1.7.1
+sphinx==1.6.1
