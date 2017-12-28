@@ -18,6 +18,9 @@ FROM python:2.7.8
 
 MAINTAINER Sandeep Parikh <parikhs@google.com>
 
+RUN wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2 && tar xvf phantomjs-2.1.1-linux-x86_64.tar.bz2
+RUN cp phantomjs-2.1.1-linux-x86_64/bin/phantomjs /usr/local/bin && chmod +x /usr/local/bin/phantomjs
+
 # Add the licenses for third party software and libraries
 ADD licenses /licenses
 

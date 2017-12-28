@@ -13,13 +13,15 @@ lastNames = ['Michaels', 'Jordan', 'Clinton', 'Blunt', 'Harvey', 'Muller', 'Redf
 
 class LocustUserBehavior(TaskSet):
 
-    def open_homepage_shop(self):
+    def open_locust_homepage(self):
         self.client.get(baseUrl)
         self.client.wait.until(
             EC.visibility_of_element_located(
-                (By.XPATH, '//h1[text()="Welcome"]')
+                (By.XPATH, '//a[text()="Shop"]')
             )
         )
+
+    def click_through_to_shop(self):
         self.client\
             .find_element_by_xpath('//a[text()="Shop"]').click()
         self.client.wait.until(
@@ -29,10 +31,10 @@ class LocustUserBehavior(TaskSet):
         )
 
     def make_order_and_checkout(self):
-        self.client.get(baseUrl + "product/" + random.choice(products))
+        self.client.get(baseUrl + "product/beanie")
         self.client.wait.until(
             EC.visibility_of_element_located(
-                (By.XPATH, '//h2[text()="Description"]')
+                (By.XPATH, '//h1[text()="Beanie"]')
             )
         )
         self.client.find_element_by_name('add-to-cart').click()
@@ -61,14 +63,22 @@ class LocustUserBehavior(TaskSet):
         )
 
 
-    @task(50)
+    @task(1)
     def homepage(self):
         self.client.timed_event_for_locust(
             "Go to", "homepage",
-            self.open_homepage_shop
+            self.open_locust_homepage
         )
 
-    @task(1)
+    @task(2)
+    def browse_products(self):
+        self.client.timed_event_for_locust(
+            "Click to",
+            "shop",
+            self.click_through_to_shop
+        )
+
+    @task(3)
     def add_to_cart_and_checkout(self):
         self.client.timed_event_for_locust(
             "Add",
@@ -78,11 +88,11 @@ class LocustUserBehavior(TaskSet):
 
 class LocustUser(PhantomJSLocust):
 
-    host = "not really used"
-    timeout = 180  # in seconds in waitUntil thingies
+#    host = "not really used"
+#    timeout = 180  # in seconds in waitUntil thingies
 #    stop_timeout = 300
-    min_wait = 0
-    max_wait = 0
+#    min_wait = 0
+#    max_wait = 0
     screen_width = 1200
     screen_height = 1200
     task_set = LocustUserBehavior
